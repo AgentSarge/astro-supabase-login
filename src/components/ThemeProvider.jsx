@@ -16,7 +16,7 @@ const themes = {
     colors: {
       background: '#000000',
       surface: 'rgba(255, 255, 255, 0.02)',
-      border: 'rgba(255, 255, 255, 0.05)',
+      border: 'rgba(255, 255, 255, 0.12)',
       text: '#ffffff',
       textSecondary: '#999999',
       accent: '#0070f3'
@@ -49,7 +49,7 @@ const themes = {
     colors: {
       background: '#000000', // Will be dynamic based on system preference
       surface: 'rgba(255, 255, 255, 0.02)',
-      border: 'rgba(255, 255, 255, 0.05)',
+      border: 'rgba(255, 255, 255, 0.12)',
       text: '#ffffff',
       textSecondary: '#999999',
       accent: '#0070f3'
