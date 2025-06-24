@@ -38,7 +38,7 @@ export default function FeedbackDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         style={{
           background: 'transparent',
-          border: '1px solid var(--border-color)',
+          border: '1px solid var(--text-secondary)',
           borderRadius: '20px',
           padding: '8px 12px',
           color: 'var(--text-secondary)',
@@ -49,7 +49,8 @@ export default function FeedbackDropdown() {
           fontSize: '12px',
           fontWeight: 500
         }}
-        whileHover={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--text-secondary)' }}
+        transition={{ duration: 0.05 }}
+        whileHover={{ backgroundColor: 'var(--bg-primary)', border: 'none' }}
         whileTap={{ scale: 0.95 }}
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -65,7 +66,7 @@ export default function FeedbackDropdown() {
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: 0.1 }}
             style={{
               position: 'absolute',
               top: '45px',

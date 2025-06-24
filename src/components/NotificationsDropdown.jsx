@@ -103,9 +103,9 @@ export default function NotificationsDropdown() {
         style={{
           background: 'transparent',
           border: '1px solid var(--border-color)',
-          borderRadius: '50%',
-          width: '36px',
-          height: '36px',
+          borderRadius: '6px',
+          width: '32px',
+          height: '32px',
           color: 'var(--text-secondary)',
           cursor: 'pointer',
           display: 'flex',

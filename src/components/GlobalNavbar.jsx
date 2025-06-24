@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ProfileDropdown from './ProfileDropdown.jsx';
 import FeedbackDropdown from './FeedbackDropdown.jsx';
 import NotificationsDropdown from './NotificationsDropdown.jsx';
+import CalendarDropdown from './CalendarDropdown.jsx';
+import HelpDropdown from './HelpDropdown.jsx';
+import AIAssistantDropdown from './AIAssistantDropdown.jsx';
 import { ThemeProvider } from './ThemeProvider.jsx';
 import supabase from './supabaseClient.js';
 
@@ -227,98 +230,31 @@ function GlobalNavbarContent() {
             {/* Feedback Dropdown - Now functional */}
             <FeedbackDropdown />
 
-            {/* Calendar */}
-            <motion.button
-              onClick={() => {
-                // TODO: Add calendar functionality
-                console.log('Calendar clicked');
-              }}
-              style={{
-                background: 'transparent',
-                border: '1px solid var(--border-color)',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                color: 'var(--text-secondary)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              whileHover={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--text-secondary)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-            </motion.button>
+            {/* Divider */}
+            <div style={{
+              width: '1px',
+              height: '20px',
+              background: 'var(--text-secondary)',
+              margin: '0 8px'
+            }} />
+
+            {/* Calendar Dropdown - Now functional */}
+            <CalendarDropdown />
 
             {/* Notifications - Now functional */}
             <NotificationsDropdown />
 
-            {/* Help */}
-            <motion.button
-              onClick={() => {
-                // TODO: Add help functionality
-                console.log('Help clicked');
-              }}
-              style={{
-                background: 'transparent',
-                border: '1px solid var(--border-color)',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                color: 'var(--text-secondary)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              whileHover={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--text-secondary)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                <point cx="12" cy="17" stroke="currentColor" strokeWidth="3"/>
-              </svg>
-            </motion.button>
+            {/* Help Dropdown - Now functional */}
+            <HelpDropdown />
 
-            {/* Settings */}
-            <motion.button
-              onClick={() => {
-                // TODO: Add settings functionality
-                console.log('Settings clicked');
-              }}
-              style={{
-                background: 'transparent',
-                border: '1px solid var(--border-color)',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                color: 'var(--text-secondary)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              whileHover={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--text-secondary)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-3.5L19 12l-2.5 2.5M6.5 8.5L4 12l2.5 2.5"/>
-              </svg>
-            </motion.button>
+            {/* AI Assistant Dropdown - Now functional */}
+            <AIAssistantDropdown />
 
             {/* Divider */}
             <div style={{
               width: '1px',
-              height: '24px',
-              background: 'var(--border-color)',
+              height: '20px',
+              background: 'var(--text-secondary)',
               margin: '0 8px'
             }} />
 
