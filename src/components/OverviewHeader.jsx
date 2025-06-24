@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import MetricCard from './MetricCard.jsx';
-import BlankCard from './BlankCard.jsx';
 
 // Function to get role-specific data
 const getRoleData = (role, location, office) => {
@@ -202,9 +201,9 @@ const getRoleData = (role, location, office) => {
               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
             </svg>
           ),
-          title: 'This Month',
-          value: '$45K',
-          change: '+18%',
+          title: 'Commission',
+          value: '$12.5K',
+          change: '+8.3%',
           changeType: 'positive'
         },
         {
@@ -214,8 +213,8 @@ const getRoleData = (role, location, office) => {
             </svg>
           ),
           title: 'Close Rate',
-          value: '75%',
-          change: '+5%',
+          value: '85%',
+          change: '+12%',
           changeType: 'positive'
         }
       ]
@@ -223,31 +222,28 @@ const getRoleData = (role, location, office) => {
     Setter: {
       title: 'Setter Dashboard',
       badge: 'Setter',
-      badgeColor: '#6366f1',
+      badgeColor: '#8b5cf6',
       metrics: [
         {
           icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M8 2v4"></path>
-              <path d="M16 2v4"></path>
-              <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-              <path d="M3 10h18"></path>
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>
           ),
-          title: 'Appointments Set',
-          value: '23',
-          change: '+6',
+          title: 'Calls Made',
+          value: '47',
+          change: '+12',
           changeType: 'positive'
         },
         {
           icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              <path d="M9 11H1l6-6 6 6zm0 0l6 6 6-6"></path>
             </svg>
           ),
-          title: 'Show Rate',
-          value: '78%',
-          change: '+3.2%',
+          title: 'Appointments Set',
+          value: '12',
+          change: '+3',
           changeType: 'positive'
         },
         {
@@ -256,16 +252,16 @@ const getRoleData = (role, location, office) => {
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
             </svg>
           ),
-          title: 'Conversion',
-          value: '42%',
-          change: '+1.8%',
+          title: 'Conversion Rate',
+          value: '25%',
+          change: '+2.1%',
           changeType: 'positive'
         }
       ]
     }
   };
 
-  return baseData[role] || baseData.Closer;
+  return baseData[role] || baseData.VP;
 };
 
 export default function OverviewHeader({ selectedRole, selectedLocation, selectedOffice }) {
@@ -277,29 +273,26 @@ export default function OverviewHeader({ selectedRole, selectedLocation, selecte
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       style={{
-        padding: '20px',
-        background: 'var(--bg-primary)'
+        background: 'var(--bg-primary)',
+        padding: '48px 80px 40px 80px',
+        borderBottom: '1px solid var(--border-color)',
+        minHeight: '140px'
       }}
     >
-      {/* Top Header Bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          background: 'var(--bg-primary)',
-          padding: '32px 48px',
-          marginBottom: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}
-      >
+      {/* Header Content */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: '100%',
+        paddingTop: '20px'
+      }}>
         {/* Left Side: Title and Date */}
         <div style={{
           display: 'flex',
           alignItems: 'flex-start',
-          gap: '16px'
+          gap: '16px',
+          marginLeft: '60px'
         }}>
           <div style={{
             display: 'flex',
@@ -354,8 +347,8 @@ export default function OverviewHeader({ selectedRole, selectedLocation, selecte
           alignItems: 'center',
           gap: '48px'
         }}>
-          {data.metrics.slice(0, 3).map((metric, index) => (
-            <div key={index} style={{
+          {[1, 2, 3].map((cardNumber) => (
+            <div key={cardNumber} style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -368,44 +361,21 @@ export default function OverviewHeader({ selectedRole, selectedLocation, selecte
                 fontWeight: 500,
                 fontFamily: '"Geist", "Inter", sans-serif'
               }}>
-                {metric.title}
+                Metrics Card {cardNumber}
               </div>
 
-              {/* Value */}
+              {/* Value Placeholder */}
               <div style={{
                 fontSize: '24px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
                 fontFamily: '"Geist", "Inter", sans-serif'
               }}>
-                {metric.value}
+                000
               </div>
             </div>
           ))}
         </div>
-      </motion.div>
-
-      {/* Four Cards Row */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '16px',
-        marginBottom: '20px'
-      }}>
-        <BlankCard number="1" />
-        <BlankCard number="2" />
-        <BlankCard number="3" />
-        <BlankCard number="4" />
-      </div>
-
-      {/* Two Larger Cards Row */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '16px'
-      }}>
-        <BlankCard number="1.2" size="large" />
-        <BlankCard number="2.1" size="large" />
       </div>
     </motion.div>
   );

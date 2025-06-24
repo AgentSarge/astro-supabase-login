@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export default function BlankCard({ number, size = 'normal' }) {
+export default function BlankCard({ number, size = 'normal', description }) {
   const isLarge = size === 'large';
   
   return (
@@ -12,11 +12,12 @@ export default function BlankCard({ number, size = 'normal' }) {
         background: 'var(--bg-surface)',
         border: '1px solid var(--border-color)',
         borderRadius: '12px',
-        padding: isLarge ? '24px' : '20px',
+        padding: isLarge ? '20px' : '16px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: isLarge ? '200px' : '120px',
+        minHeight: isLarge ? '400px' : '140px',
+        height: isLarge ? '100%' : 'auto',
         cursor: 'pointer',
         transition: 'all 0.2s ease'
       }}
@@ -26,12 +27,31 @@ export default function BlankCard({ number, size = 'normal' }) {
       }}
     >
       <div style={{
-        fontSize: isLarge ? '24px' : '18px',
-        fontWeight: 600,
-        color: 'var(--text-secondary)',
-        fontFamily: '"Geist", "Inter", sans-serif'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '8px'
       }}>
-        {number}
+        <div style={{
+          fontSize: isLarge ? '24px' : '18px',
+          fontWeight: 600,
+          color: 'var(--text-secondary)',
+          fontFamily: '"Geist", "Inter", sans-serif'
+        }}>
+          {number}
+        </div>
+        {description && (
+          <div style={{
+            fontSize: isLarge ? '14px' : '12px',
+            fontWeight: 400,
+            color: 'var(--text-secondary)',
+            fontFamily: '"Geist", "Inter", sans-serif',
+            opacity: 0.7,
+            textAlign: 'center'
+          }}>
+            {description}
+          </div>
+        )}
       </div>
     </motion.div>
   );

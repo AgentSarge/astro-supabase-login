@@ -124,13 +124,14 @@ export default function NotificationsDropdown() {
         {unreadCount > 0 && (
           <div style={{
             position: 'absolute',
-            top: '6px',
-            right: '6px',
+            top: '-2px',
+            right: '-2px',
             width: '8px',
             height: '8px',
             background: '#ff4757',
             borderRadius: '50%',
-            border: '2px solid var(--bg-surface)'
+            border: '1px solid var(--bg-surface)',
+            fontSize: '0'
           }} />
         )}
       </motion.button>

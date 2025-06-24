@@ -9,7 +9,7 @@ import AIAssistantDropdown from './AIAssistantDropdown.jsx';
 import RoleSelector from './RoleSelector.jsx';
 import LocationSelector from './LocationSelector.jsx';
 import OfficeSelector from './OfficeSelector.jsx';
-import OverviewHeader from './OverviewHeader.jsx';
+import DashboardLayout from './DashboardLayout.jsx';
 import { ThemeProvider, useTheme } from './ThemeProvider.jsx';
 import supabase from './supabaseClient.js';
 
@@ -218,20 +218,15 @@ function GlobalNavbarContent() {
                 }}
               />
             ) : (
-              <div style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '6px',
-                background: 'linear-gradient(135deg, #0070f3, #00d4ff)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontWeight: 700,
-                fontSize: '14px'
-              }}>
-                I
-              </div>
+              <img 
+                src="/collapsed_w_txt.png" 
+                alt="ION"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  objectFit: 'contain'
+                }}
+              />
             )}
           </div>
           
@@ -468,13 +463,13 @@ function GlobalNavbarContent() {
           </div>
         </div>
 
-        {/* Main Content - Dynamic Overview */}
+        {/* Main Content - Dynamic Dashboard */}
         <div style={{
           flex: 1,
           background: 'var(--bg-primary)',
-          overflow: 'auto'
+          overflow: 'hidden'
         }}>
-          <OverviewHeader 
+          <DashboardLayout 
             selectedRole={selectedRole}
             selectedLocation={selectedLocation}
             selectedOffice={selectedOffice}
