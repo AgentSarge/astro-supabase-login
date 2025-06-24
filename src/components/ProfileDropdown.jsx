@@ -5,6 +5,8 @@ import supabase from './supabaseClient.js';
 
 export default function ProfileDropdown({ user, onSignOut }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
   
   // Safely get theme context
@@ -26,6 +28,38 @@ export default function ProfileDropdown({ user, onSignOut }) {
     console.warn('Theme context not available, using defaults');
   }
 
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('email', user.email)
+          .single();
+
+        if (error) {
+          console.warn('Could not fetch profile:', error.message);
+          setProfile(null);
+        } else {
+          console.log('Profile data:', data);
+          setProfile(data);
+        }
+      } catch (err) {
+        console.warn('Error fetching profile:', err);
+        setProfile(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.email) {
+      fetchProfile();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -39,8 +73,26 @@ export default function ProfileDropdown({ user, onSignOut }) {
   }, []);
 
   // Get user initials for profile icon
-  const getInitials = (email) => {
+  const getInitials = (name, email) => {
+    if (name && name.trim()) {
+      // Use full name if available
+      const nameParts = name.trim().split(' ');
+      if (nameParts.length >= 2) {
+        return (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+      } else {
+        return nameParts[0].substring(0, 2).toUpperCase();
+      }
+    }
+    // Fallback to email
     return email.split('@')[0].substring(0, 2).toUpperCase();
+  };
+
+  // Get display name
+  const getDisplayName = () => {
+    if (profile?.full_name && profile.full_name.trim()) {
+      return profile.full_name;
+    }
+    return user.email.split('@')[0];
   };
 
   const handleLogout = async () => {
@@ -101,7 +153,7 @@ export default function ProfileDropdown({ user, onSignOut }) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        {getInitials(user.email)}
+        {loading ? '...' : getInitials(profile?.full_name, user.email)}
       </motion.button>
 
       {/* Dropdown Menu */}
@@ -137,7 +189,7 @@ export default function ProfileDropdown({ user, onSignOut }) {
                 color: 'white',
                 marginBottom: '4px'
               }}>
-                {user.email.split('@')[0]}
+                {loading ? 'Loading...' : getDisplayName()}
               </div>
               <div style={{
                 fontSize: '14px',
@@ -146,6 +198,16 @@ export default function ProfileDropdown({ user, onSignOut }) {
               }}>
                 {user.email}
               </div>
+              {profile?.role && (
+                <div style={{
+                  fontSize: '12px',
+                  color: '#666',
+                  marginTop: '4px',
+                  textTransform: 'capitalize'
+                }}>
+                  {profile.role}
+                </div>
+              )}
             </div>
 
             {/* Menu Items */}
@@ -198,11 +260,10 @@ export default function ProfileDropdown({ user, onSignOut }) {
                 whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 12l2 2 4-4"/>
-                  <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-                  <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-                  <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-                  <path d="M12 21c0-1-1-3-3-3s-3 2-3 3 1 3 3 3 3-2 3-3"/>
+                  <path d="M9 2v6h6V2"/>
+                  <path d="M9 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-2"/>
+                  <path d="M9 16v-4h6v4"/>
+                  <path d="M12 16v2"/>
                 </svg>
                 Feature previews
               </motion.button>
@@ -228,10 +289,7 @@ export default function ProfileDropdown({ user, onSignOut }) {
                 whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
-                  <path d="M6 8h8"/>
-                  <path d="M6 12h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
-                  <path d="M6 16h8"/>
+                  <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
                 </svg>
                 Command menu
               </motion.button>
