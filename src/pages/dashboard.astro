@@ -1,0 +1,30 @@
+---
+// Dashboard page - authenticated users only
+import GlobalNavbar from '../components/GlobalNavbar.jsx';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../global.css" />
+    <style>
+      html, body {
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        position: fixed;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <GlobalNavbar client:load />
+  </body>
+</html> 
