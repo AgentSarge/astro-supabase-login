@@ -44,15 +44,81 @@ const themes = {
       accent: '#0070f3'
     }
   },
-  system: {
-    name: 'System',
+  monokai: {
+    name: 'Monokai',
     colors: {
-      background: '#000000', // Will be dynamic based on system preference
-      surface: 'rgba(255, 255, 255, 0.02)',
-      border: 'rgba(255, 255, 255, 0.12)',
+      background: '#272822',
+      surface: '#383830',
+      border: '#49483e',
+      text: '#f8f8f2',
+      textSecondary: '#a6e22e',
+      accent: '#fd971f'
+    }
+  },
+  monokaiDimmed: {
+    name: 'Monokai Dimmed',
+    colors: {
+      background: '#222222',
+      surface: '#2d2a2e',
+      border: '#49483e',
+      text: '#f8f8f2',
+      textSecondary: '#a6e22e',
+      accent: '#fd971f'
+    }
+  },
+  dracula: {
+    name: 'Dracula',
+    colors: {
+      background: '#282a36',
+      surface: '#44475a',
+      border: '#6272a4',
+      text: '#f8f8f2',
+      textSecondary: '#bd93f9',
+      accent: '#ff79c6'
+    }
+  },
+  oneDark: {
+    name: 'One Dark',
+    colors: {
+      background: '#282c34',
+      surface: '#21252b',
+      border: '#3a3f4b',
+      text: '#abb2bf',
+      textSecondary: '#61afef',
+      accent: '#c678dd'
+    }
+  },
+  nord: {
+    name: 'Nord',
+    colors: {
+      background: '#2e3440',
+      surface: '#3b4252',
+      border: '#4c566a',
+      text: '#eceff4',
+      textSecondary: '#81a1c1',
+      accent: '#88c0d0'
+    }
+  },
+  highContrast: {
+    name: 'High Contrast',
+    colors: {
+      background: '#000000',
+      surface: '#1a1a1a',
+      border: '#ffffff',
       text: '#ffffff',
-      textSecondary: '#999999',
-      accent: '#0070f3'
+      textSecondary: '#ffea00',
+      accent: '#ff1744'
+    }
+  },
+  red: {
+    name: 'Red',
+    colors: {
+      background: '#2d0000',
+      surface: '#4b0000',
+      border: '#ff1744',
+      text: '#fff0f0',
+      textSecondary: '#ff8a80',
+      accent: '#ff1744'
     }
   }
 };

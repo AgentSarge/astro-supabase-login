@@ -9,13 +9,19 @@ export default function ProfileDropdown({ user, onSignOut }) {
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
   
-  // Safely get theme context
+  // Fetch theme context
   let currentTheme = 'dark';
   let themes = {
     dark: { name: 'Dark' },
     light: { name: 'Light' },
     classicDark: { name: 'Classic Dark' },
-    system: { name: 'System' }
+    monokai: { name: 'Monokai' },
+    monokaiDimmed: { name: 'Monokai Dimmed' },
+    dracula: { name: 'Dracula' },
+    oneDark: { name: 'One Dark' },
+    nord: { name: 'Nord' },
+    highContrast: { name: 'High Contrast' },
+    red: { name: 'Red' }
   };
   let changeTheme = () => {};
 
@@ -314,39 +320,41 @@ export default function ProfileDropdown({ user, onSignOut }) {
               </div>
 
               {/* Theme Options */}
-              {Object.entries(themes).map(([themeKey, theme]) => (
-                <motion.button
-                  key={themeKey}
-                  onClick={() => {
-                    changeTheme(themeKey);
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: '8px 20px',
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'white',
-                    fontSize: '14px',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    position: 'relative'
-                  }}
-                  whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                >
-                  <div style={{
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    background: currentTheme === themeKey ? '#0070f3' : 'transparent',
-                    border: currentTheme === themeKey ? 'none' : '1px solid #666',
-                    marginLeft: '4px'
-                  }} />
-                  {theme.name}
-                </motion.button>
-              ))}
+              {Object.entries(themes)
+                .filter(([themeKey]) => themeKey !== 'system')
+                .map(([themeKey, theme]) => (
+                  <motion.button
+                    key={themeKey}
+                    onClick={() => {
+                      changeTheme(themeKey);
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '8px 20px',
+                      background: 'transparent',
+                      border: 'none',
+                      color: 'white',
+                      fontSize: '14px',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      position: 'relative'
+                    }}
+                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                  >
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: currentTheme === themeKey ? (themes[themeKey].colors?.accent || '#0070f3') : 'transparent',
+                      border: currentTheme === themeKey ? 'none' : '1px solid #666',
+                      marginLeft: '4px'
+                    }} />
+                    {theme.name}
+                  </motion.button>
+                ))}
 
               {/* Divider */}
               <div style={{

@@ -63,13 +63,6 @@ export function Sidebar({
           <NavigationLogo isCollapsed={!shouldShowExpandedContent} />
         </div>
 
-        {/* Divider line */}
-        <div style={{
-          height: '1px',
-          background: 'var(--border-color)',
-          margin: '0'
-        }} />
-
         {/* Navigation Menu */}
         <NavigationMenu
           userRole={userRole}
