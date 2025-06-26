@@ -7,6 +7,7 @@
 
 // Layout components
 export { default as DashboardLayout } from './components/DashboardLayout.jsx';
+export { default as RecordingsLayout } from './components/RecordingsLayout.jsx';
 
 // Layout primitives
 export { default as Container } from './primitives/Container.jsx';

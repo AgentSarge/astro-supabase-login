@@ -31,8 +31,23 @@ export const menuItems = [
       ]
     },
     roles: ['VP', 'Regional', 'District', 'Office', 'Closer', 'Setter'], // Available to all roles
-    isActive: true, // Currently active page
     href: '/dashboard'
+  },
+  {
+    id: 'recordings',
+    label: 'Recordings',
+    icon: {
+      type: 'svg',
+      viewBox: '0 0 24 24',
+      paths: [
+        { d: 'M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z', stroke: true },
+        { d: 'M19 10v1a7 7 0 0 1-14 0v-1', stroke: true },
+        { d: 'M12 18v4', stroke: true },
+        { d: 'M8 22h8', stroke: true }
+      ]
+    },
+    roles: ['VP', 'Regional', 'District', 'Office', 'Closer', 'Setter'], // Available to all roles
+    href: '/recordings'
   }
   // Future menu items can be added here
 ];

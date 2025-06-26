@@ -5,6 +5,9 @@ import { useSidebar } from '../hooks/useSidebar.js';
 import { Sidebar } from './Sidebar.jsx';
 import { TopNavbar } from './TopNavbar.jsx';
 
+// Import layouts
+import { DashboardLayout, RecordingsLayout } from '../../layouts/index.js';
+
 /**
  * Loading Component
  */
@@ -85,8 +88,11 @@ export function Navigation({ children, className = '', style = {} }) {
   };
 
   // Handle menu item clicks
+  const [activeMenuItem, setActiveMenuItem] = useState('overview');
+
   const handleMenuItemClick = (item) => {
     console.log('Menu item clicked:', item);
+    setActiveMenuItem(item.id);
     // Handle navigation logic here
   };
 
@@ -120,6 +126,7 @@ export function Navigation({ children, className = '', style = {} }) {
         isCollapsed={isCollapsed}
         isHovered={isHovered}
         userRole={userRole}
+        activeMenuItem={activeMenuItem}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onToggleCollapse={toggleCollapse}
@@ -150,15 +157,23 @@ export function Navigation({ children, className = '', style = {} }) {
           background: 'var(--bg-primary)',
           overflow: 'auto'
         }}>
-          {/* Pass selection state to children */}
-          {React.isValidElement(children) ? 
-            React.cloneElement(children, { 
-              selectedRole: safeSelectedRole, 
-              selectedLocation: safeSelectedLocation, 
-              selectedOffice: safeSelectedOffice 
-            }) :
-            children
-          }
+          {/* Conditionally render content based on active menu item */}
+          {activeMenuItem === 'recordings' ? (
+            <RecordingsLayout 
+              selectedRole={safeSelectedRole} 
+              selectedLocation={safeSelectedLocation} 
+              selectedOffice={safeSelectedOffice} 
+            />
+          ) : (
+            /* Pass selection state to children */
+            React.isValidElement(children) ? 
+              React.cloneElement(children, { 
+                selectedRole: safeSelectedRole, 
+                selectedLocation: safeSelectedLocation, 
+                selectedOffice: safeSelectedOffice 
+              }) :
+              children
+          )}
         </div>
       </div>
     </div>

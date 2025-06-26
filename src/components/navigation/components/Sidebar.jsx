@@ -12,6 +12,7 @@ export function Sidebar({
   isCollapsed,
   isHovered,
   userRole,
+  activeMenuItem,
   onMouseEnter,
   onMouseLeave,
   onToggleCollapse,
@@ -53,11 +54,11 @@ export function Sidebar({
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {/* Logo Section */}
         <div style={{
-          height: '60px',
+          height: '48px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: shouldShowExpandedContent ? 'flex-start' : 'center',
-          padding: shouldShowExpandedContent ? '0 1rem' : '0'
+          justifyContent: 'center',
+          padding: shouldShowExpandedContent ? '0 0.5rem' : '0'
         }}>
           <NavigationLogo isCollapsed={!shouldShowExpandedContent} />
         </div>
@@ -73,6 +74,7 @@ export function Sidebar({
         <NavigationMenu
           userRole={userRole}
           isCollapsed={!shouldShowExpandedContent}
+          activeItemId={activeMenuItem}
           onItemClick={onMenuItemClick}
         />
       </div>
