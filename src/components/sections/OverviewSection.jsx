@@ -344,19 +344,60 @@ export default function OverviewSection({ selectedRole, selectedLocation, select
         </div>
 
         {/* Right Side: Metrics with Tooltip */}
-        <div style={{
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '48px'
-        }}>
-          {/* Settings Icon with Tooltip */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', flex: 1, position: 'relative' }}>
+          {/* Metrics Cards Row */}
           <div style={{
-            position: 'fixed',
-            top: '150px',
-            right: '8px',
-            zIndex: 10
+            display: 'flex',
+            alignItems: 'center',
+            gap: '48px',
+            justifyContent: 'flex-end',
+            flex: 1,
+            width: '100%'
           }}>
+            {[1, 2, 3].map((cardNumber) => (
+              <motion.div 
+                key={cardNumber}
+                animate={isMetricsShaking ? {
+                  x: [0, -1, 1, -1, 1, 0],
+                  y: [0, -1, 1, -1, 1, 0],
+                  rotate: [0, -0.3, 0.3, -0.3, 0.3, 0]
+                } : {}}
+                transition={{
+                  duration: 0.15 + cardNumber * 0.01,
+                  repeat: isMetricsShaking ? Infinity : 0,
+                  repeatType: "loop"
+                }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+              >
+                {/* Title */}
+                <div style={{
+                  fontSize: '13px',
+                  color: 'var(--text-secondary)',
+                  fontWeight: 500,
+                  fontFamily: '"Geist", "Inter", sans-serif'
+                }}>
+                  Metrics Card {cardNumber}
+                </div>
+
+                {/* Value Placeholder */}
+                <div style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  fontFamily: '"Geist", "Inter", sans-serif'
+                }}>
+                  000
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          {/* Plus Icon for Metrics Management */}
+          <div style={{ marginLeft: '32px', position: 'relative' }}>
             <div 
               style={{
                 cursor: 'pointer',
@@ -366,7 +407,6 @@ export default function OverviewSection({ selectedRole, selectedLocation, select
                 position: 'relative'
               }}
               onMouseEnter={(e) => {
-                // Show tooltip and start shaking
                 const tooltip = e.currentTarget.querySelector('.metrics-tooltip');
                 if (tooltip) {
                   tooltip.style.opacity = '1';
@@ -374,7 +414,6 @@ export default function OverviewSection({ selectedRole, selectedLocation, select
                 setIsMetricsShaking(true);
               }}
               onMouseLeave={(e) => {
-                // Hide tooltip and stop shaking
                 const tooltip = e.currentTarget.querySelector('.metrics-tooltip');
                 if (tooltip) {
                   tooltip.style.opacity = '0';
@@ -387,16 +426,15 @@ export default function OverviewSection({ selectedRole, selectedLocation, select
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              
               {/* Tooltip */}
               <div 
                 className="metrics-tooltip"
                 style={{
                   position: 'absolute',
-                  right: '100%',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  marginRight: '8px',
+                  left: '50%',
+                  top: '-12px',
+                  transform: 'translateX(-50%) translateY(-100%)',
+                  margin: 0,
                   padding: '6px 10px',
                   background: '#2a2a2a',
                   color: 'white',
@@ -411,7 +449,8 @@ export default function OverviewSection({ selectedRole, selectedLocation, select
                   fontFamily: '"Geist", "Inter", sans-serif',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px'
+                  gap: '6px',
+                  zIndex: 20
                 }}
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -421,61 +460,18 @@ export default function OverviewSection({ selectedRole, selectedLocation, select
                 {/* Tooltip arrow */}
                 <div style={{
                   position: 'absolute',
-                  left: '100%',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
+                  left: '50%',
+                  bottom: '-7px',
+                  transform: 'translateX(-50%)',
                   width: 0,
                   height: 0,
-                  borderTop: '4px solid transparent',
-                  borderBottom: '4px solid transparent',
-                  borderLeft: '4px solid #2a2a2a'
+                  borderLeft: '6px solid transparent',
+                  borderRight: '6px solid transparent',
+                  borderTop: '7px solid #2a2a2a'
                 }} />
               </div>
             </div>
           </div>
-
-          {/* Metrics Cards */}
-          {[1, 2, 3].map((cardNumber) => (
-            <motion.div 
-              key={cardNumber}
-              animate={isMetricsShaking ? {
-                x: [0, -1, 1, -1, 1, 0],
-                y: [0, -1, 1, -1, 1, 0],
-                rotate: [0, -0.3, 0.3, -0.3, 0.3, 0]
-              } : {}}
-              transition={{
-                duration: 0.15 + cardNumber * 0.01,
-                repeat: isMetricsShaking ? Infinity : 0,
-                repeatType: "loop"
-              }}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '4px'
-              }}
-            >
-              {/* Title */}
-              <div style={{
-                fontSize: '13px',
-                color: 'var(--text-secondary)',
-                fontWeight: 500,
-                fontFamily: '"Geist", "Inter", sans-serif'
-              }}>
-                Metrics Card {cardNumber}
-              </div>
-
-              {/* Value Placeholder */}
-              <div style={{
-                fontSize: '24px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                fontFamily: '"Geist", "Inter", sans-serif'
-              }}>
-                000
-              </div>
-            </motion.div>
-          ))}
         </div>
       </div>
     </motion.div>
