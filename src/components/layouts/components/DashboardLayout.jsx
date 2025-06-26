@@ -42,8 +42,12 @@ export default function DashboardLayout({ selectedRole, selectedLocation, select
       
       {/* Row 5: Top Offices Section OR Objection Memory */}
       {isOfficeLevel ? (
-        // Office Level: Hide Top Offices section entirely
-        null
+        // Office Level: Show Objection Memory instead of Top Offices
+        <ObjectionMemorySection 
+          selectedRole={selectedRole}
+          selectedLocation={selectedLocation}
+          selectedOffice={selectedOffice}
+        />
       ) : isIndividualLevel ? (
         // Individual Level: Show Objection Memory instead of Top Offices
         <ObjectionMemorySection 
