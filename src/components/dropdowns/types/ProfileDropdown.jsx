@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from './ThemeProvider.jsx';
-import supabase from './supabaseClient.js';
+import { useTheme } from '../../ThemeProvider.jsx';
+import supabase from '../../supabaseClient.js';
 
 export default function ProfileDropdown({ user, onSignOut }) {
   const [isOpen, setIsOpen] = useState(false);
