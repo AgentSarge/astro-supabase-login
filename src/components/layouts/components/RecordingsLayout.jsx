@@ -55,6 +55,7 @@ export default function RecordingsLayout({ selectedRole, selectedLocation, selec
             selectedRole={selectedRole}
             selectedLocation={selectedLocation}
             selectedOffice={selectedOffice}
+            selectedRecording={selectedRecording}
           />
         </div>
         
