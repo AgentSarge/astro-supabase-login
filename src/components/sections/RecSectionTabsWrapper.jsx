@@ -39,7 +39,7 @@ export default function RecSectionTabsWrapper({
           borderBottom: '1px solid var(--border-color)',
           background: 'transparent',
           padding: '0 24px',
-          height: '38px',
+          height: '46px',
           fontFamily: '"Geist", "Inter", sans-serif',
           display: 'flex',
           alignItems: 'center',
@@ -63,7 +63,7 @@ export default function RecSectionTabsWrapper({
                   (activeDetailPanel === tab.key && ['fullTranscript', 'objections', 'tags'].includes(tab.key))
                     ? 600
                     : 500,
-                fontSize: '15px',
+                fontSize: '16px',
                 cursor: 'pointer',
                 borderBottom:
                   (selectedTab === tab.key && !['fullTranscript', 'objections', 'tags'].includes(tab.key)) ||
@@ -74,6 +74,9 @@ export default function RecSectionTabsWrapper({
                 minWidth: 0,
                 padding: '0 16px',
                 marginBottom: '-2px',
+                height: '46px',
+                display: 'flex',
+                alignItems: 'center',
                 transition: 'color 0.2s, border-bottom 0.2s',
               }}
               aria-pressed={
