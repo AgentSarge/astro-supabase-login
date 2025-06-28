@@ -48,6 +48,21 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
     return `${h}:${m}:${s}`;
   }
 
+  // --- Audio Progress Bar State ---
+  const audioDuration = 120; // Example: 2 minutes
+  const progress = Math.min(timestamp / audioDuration, 1);
+  // --- Transcript Highlighting ---
+  const transcriptWords = transcriptText.split(' ');
+  const currentWordIdx = Math.floor((transcriptIndex / transcriptText.length) * transcriptWords.length);
+  // --- Scrub Handler ---
+  const handleScrub = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const pct = Math.max(0, Math.min(1, x / rect.width));
+    setTimestamp(Math.round(audioDuration * pct));
+    setTranscriptIndex(Math.floor(transcriptText.length * pct));
+  };
+
   // Placeholder for no selection
   if (!selectedRecording) {
     return (
@@ -162,92 +177,128 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
           </button>
         </div>
       </div>
-      {/* Row 2: Section 1: Audio controls, transcript, waveform */}
+      {/* Unified Main Panel */}
       {selectedTab === 'Recording' ? (
         <div style={{
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          gap: 32,
+          justifyContent: 'flex-start',
+          gap: 24,
           minHeight: 0,
           minWidth: 0,
           maxHeight: '100vh',
           overflowY: 'auto',
+          padding: '32px 0 0 0',
         }}>
-          {/* Audio Controls */}
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 32 }}>
-            {/* Play/Pause Toggle */}
-            <button
-              type="button"
+          {/* Audio Controls + Progress Bar */}
+          <div style={{ width: '100%', maxWidth: 420, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: 24, alignItems: 'center', justifyContent: 'center' }}>
+              {/* Play/Pause Toggle */}
+              <button
+                type="button"
+                aria-label={isPlaying ? 'Pause' : 'Play'}
+                tabIndex={0}
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: '50%',
+                  border: isPlaying ? 'none' : '2px solid var(--border-color)',
+                  background: isPlaying ? 'var(--accent-color)' : 'var(--bg-surface)',
+                  boxShadow: isPlaying ? '0 2px 12px var(--accent-color)' : '0 1px 4px rgba(0,0,0,0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontSize: 26,
+                  transition: 'box-shadow 0.2s, background 0.2s, border 0.2s',
+                  color: isPlaying ? '#fff' : 'var(--accent-color)',
+                }}
+                onClick={() => setIsPlaying(p => !p)}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setIsPlaying(p => !p); }}
+              >
+                {isPlaying ? (
+                  <TbPlayerPauseFilled size={28} color="#fff" />
+                ) : (
+                  <TbPlayerPlayFilled size={28} color={"var(--accent-color)"} />
+                )}
+              </button>
+              {/* Volume Button */}
+              <button
+                type="button"
+                aria-label="Volume"
+                tabIndex={0}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  border: '2px solid var(--accent-color)',
+                  background: 'var(--bg-surface)',
+                  boxShadow: '0 1.5px 6px rgba(0,0,0,0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontSize: 22,
+                  color: 'var(--accent-color)',
+                  transition: 'box-shadow 0.2s, background 0.2s, border 0.2s',
+                }}
+                // Add onClick for volume logic if needed
+              >
+                <TbVolume2 size={22} color="inherit" />
+              </button>
+              {/* Timestamp (left of progress bar on mobile, above on desktop) */}
+              <span style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginLeft: 12, minWidth: 70, textAlign: 'center' }}>{formatTimestamp(timestamp)} / {formatTimestamp(audioDuration)}</span>
+            </div>
+            {/* Progress Bar */}
+            <div
+              role="slider"
+              aria-valuenow={Math.round(progress * 100)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              tabIndex={0}
+              onClick={handleScrub}
+              onKeyDown={e => {
+                if (e.key === 'ArrowLeft') setTimestamp(t => Math.max(0, t - 2));
+                if (e.key === 'ArrowRight') setTimestamp(t => Math.min(audioDuration, t + 2));
+              }}
               style={{
-                width: 56,
-                height: 56,
-                borderRadius: '50%',
-                border: isPlaying ? 'none' : '2px solid var(--border-color)',
-                background: isPlaying ? 'var(--accent-color)' : 'var(--bg-surface)',
-                boxShadow: isPlaying ? '0 2px 12px var(--accent-color)' : '0 1px 4px rgba(0,0,0,0.08)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: '100%',
+                height: 8,
+                background: 'var(--border-color)',
+                borderRadius: 4,
+                marginTop: 4,
+                marginBottom: 0,
                 cursor: 'pointer',
-                fontSize: 26,
-                transition: 'box-shadow 0.2s, background 0.2s, border 0.2s',
-                color: isPlaying ? '#fff' : 'var(--accent-color)',
-              }}
-              aria-label={isPlaying ? 'Pause' : 'Play'}
-              onClick={() => setIsPlaying(p => !p)}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = 'var(--accent-color)';
-                e.currentTarget.style.color = '#fff';
-                e.currentTarget.style.border = 'none';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = isPlaying ? 'var(--accent-color)' : 'var(--bg-surface)';
-                e.currentTarget.style.color = isPlaying ? '#fff' : 'var(--accent-color)';
-                e.currentTarget.style.border = isPlaying ? 'none' : '2px solid var(--border-color)';
+                position: 'relative',
+                outline: 'none',
               }}
             >
-              {isPlaying ? (
-                <TbPlayerPauseFilled size={32} color="#fff" />
-              ) : (
-                <TbPlayerPlayFilled size={32} color={"var(--accent-color)"} />
-              )}
-            </button>
-            {/* Volume Button */}
-            <button
-              type="button"
-              style={{
-                width: 56,
-                height: 56,
+              <div style={{
+                width: `${progress * 100}%`,
+                height: '100%',
+                background: 'var(--accent-color)',
+                borderRadius: 4,
+                transition: 'width 0.2s',
+              }} />
+              {/* Thumb */}
+              <div style={{
+                position: 'absolute',
+                left: `calc(${progress * 100}% - 8px)`,
+                top: -4,
+                width: 16,
+                height: 16,
                 borderRadius: '50%',
-                border: '2px solid var(--accent-color)',
-                background: 'var(--bg-surface)',
-                boxShadow: '0 1.5px 6px rgba(0,0,0,0.08)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                fontSize: 26,
-                color: 'var(--accent-color)',
-                transition: 'box-shadow 0.2s, background 0.2s, border 0.2s',
-              }}
-              aria-label="Volume"
-              // Add onClick for volume logic if needed
-              onMouseEnter={e => {
-                e.currentTarget.style.background = 'var(--accent-color)';
-                e.currentTarget.style.color = '#fff';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'var(--bg-surface)';
-                e.currentTarget.style.color = 'var(--accent-color)';
-              }}
-            >
-              <TbVolume2 size={28} color="inherit" />
-            </button>
+                background: 'var(--accent-color)',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
+                border: '2px solid #fff',
+                pointerEvents: 'none',
+                transition: 'left 0.2s',
+              }} />
+            </div>
           </div>
-          {/* Transcript */}
+          {/* Transcript (highlighted) */}
           <div style={{
             fontSize: 18,
             color: 'var(--text-primary)',
@@ -259,28 +310,37 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
             minWidth: 220,
             textAlign: 'center',
             minHeight: 32,
+            maxWidth: 480,
+            margin: '0 auto',
+            overflowX: 'auto',
+            whiteSpace: 'pre-wrap',
           }}>
-            {transcriptText.slice(0, transcriptIndex)}
+            {transcriptWords.map((word, idx) => (
+              <span key={idx} style={{
+                background: idx === currentWordIdx ? 'var(--accent-color)' : 'transparent',
+                color: idx === currentWordIdx ? '#fff' : 'inherit',
+                borderRadius: 4,
+                padding: idx === currentWordIdx ? '2px 4px' : undefined,
+                transition: 'background 0.2s, color 0.2s',
+                marginRight: 4,
+              }}>{word}</span>
+            ))}
           </div>
-          {/* Audio Waveform Placeholder and Radio Buttons */}
+          {/* Waveform (interactive, animated) */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-            {/* Waveform */}
             <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-              <svg width="240" height="240" viewBox="0 0 240 240" style={{ filter: isPlaying ? 'drop-shadow(0 0 16px #00f8)' : 'none', transition: 'filter 0.3s' }}>
+              <svg width="240" height="240" viewBox="0 0 240 240" style={{ filter: isPlaying ? 'drop-shadow(0 0 16px #00f8)' : 'none', transition: 'filter 0.3s', cursor: 'pointer' }} onClick={handleScrub}>
                 <defs>
                   <radialGradient id="waveGlow" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#00f" stopOpacity="0.25" />
                     <stop offset="100%" stopColor="#00f" stopOpacity="0" />
                   </radialGradient>
                 </defs>
-                {/* Glow background */}
                 <circle cx="120" cy="120" r="100" fill="url(#waveGlow)" />
-                {/* Main waveform layers */}
                 {[0, 1, 2].map(layer => (
                   <g key={layer}>
                     {[...Array(64)].map((_, i) => {
                       const angle = (i / 64) * 2 * Math.PI;
-                      // Layered amplitude and color
                       const base = 80 + layer * 8;
                       const amp = [12, 7, 3][layer];
                       const speed = [0.7, 1.1, 1.7][layer];
@@ -289,7 +349,7 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                         'rgba(0,128,255,0.35)',
                         'rgba(0,128,255,0.15)'
                       ][layer];
-                      const pulse = isPlaying ? amp * Math.abs(Math.sin(Date.now() / (220 - layer * 40) + i * speed)) : 0;
+                      const pulse = isPlaying ? amp * Math.abs(Math.sin(Date.now() / (220 - layer * 40) + i * speed + timestamp)) : 0;
                       const r = base + pulse;
                       const x1 = 120 + base * Math.cos(angle);
                       const y1 = 120 + base * Math.sin(angle);
@@ -311,87 +371,61 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                     })}
                   </g>
                 ))}
-                {/* Subtle static inner ring for realism */}
                 <circle cx="120" cy="120" r="70" stroke="#00f" strokeWidth="1.5" fill="none" opacity="0.18" />
-                {/* Outer ring */}
                 <circle cx="120" cy="120" r="100" stroke="#00f" strokeWidth="2" fill="none" opacity="0.5" />
               </svg>
             </div>
           </div>
-        </div>
-      ) : (
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--text-secondary)',
-          fontFamily: '"Geist", "Inter", sans-serif'
-        }}>
-          Blank 1
-        </div>
-      )}
-      {/* Row 3: Section 2: Image, timestamp, description */}
-      {selectedTab === 'Recording' ? (
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 0,
-          minHeight: 0,
-          minWidth: 0,
-        }}>
-          {/* Image row with timestamp above image */}
+          {/* Metadata Card (timestamp, image, description) */}
           <div style={{
+            marginTop: 16,
+            width: '100%',
+            maxWidth: 420,
+            background: 'var(--bg-surface)',
+            borderRadius: 16,
+            boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'flex-start',
-            width: '100%',
-            maxWidth: 'min(90vw, 400px)',
-            marginBottom: 8,
+            justifyContent: 'center',
+            padding: '20px 0 16px 0',
+            gap: 8,
           }}>
-            {/* Timestamp above image, centered */}
             <span style={{ fontWeight: 600, fontSize: 18, whiteSpace: 'nowrap', color: 'var(--text-primary)', marginBottom: 6 }}>{formatTimestamp(timestamp)}</span>
-            {/* Image container */}
             <div style={{
-              width: 'min(90vw, 400px)',
-              maxWidth: 400,
-              height: 'min(56vw, 225px)',
-              maxHeight: 225,
+              width: 'min(90vw, 340px)',
+              maxWidth: 340,
+              height: 'min(56vw, 180px)',
+              maxHeight: 180,
               background: '#111',
-              borderRadius: 16,
+              borderRadius: 12,
               boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               overflow: 'hidden',
             }}>
-              {/* Placeholder image */}
-              <img src="https://dummyimage.com/400x225/111/fff&text=+" alt="Important moment" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 16, display: 'block' }} />
+              <img src="https://dummyimage.com/340x180/111/fff&text=+" alt="Important moment" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12, display: 'block' }} />
             </div>
-          </div>
-          {/* Sub-description: centered below image */}
-          <div style={{
-            marginTop: 8,
-            color: 'var(--text-secondary)',
-            fontSize: 15,
-            fontFamily: '"Geist", "Inter", sans-serif',
-            lineHeight: 1.5,
-            maxWidth: 'min(90vw, 400px)',
-            wordBreak: 'break-word',
-            overflowWrap: 'anywhere',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingLeft: 0,
-          }}>
-            <span style={{ fontWeight: 500 }}>Important moment: Objection handled</span>
-            <span>Speaker: Agent</span>
+            <div style={{
+              marginTop: 8,
+              color: 'var(--text-secondary)',
+              fontSize: 15,
+              fontFamily: '"Geist", "Inter", sans-serif',
+              lineHeight: 1.5,
+              maxWidth: 'min(90vw, 340px)',
+              wordBreak: 'break-word',
+              overflowWrap: 'anywhere',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingLeft: 0,
+            }}>
+              <span style={{ fontWeight: 500 }}>Important moment: Objection handled</span>
+              <span>Speaker: Agent</span>
+            </div>
           </div>
         </div>
       ) : (
@@ -403,7 +437,8 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
           color: 'var(--text-secondary)',
           fontFamily: '"Geist", "Inter", sans-serif'
         }}>
-          Blank 2
+          {/* Blank state for Details/Pipeline */}
+          Coming soon
         </div>
       )}
     </div>
