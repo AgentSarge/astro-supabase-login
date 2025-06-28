@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { TbPlayerPlayFilled, TbPlayerPauseFilled, TbPlayerStopFilled, TbVolume2 } from 'react-icons/tb';
 
-export default function RecSection2({ selectedRole, selectedLocation, selectedOffice, selectedRecording }) {
-  const [selectedTab, setSelectedTab] = useState('Transcript');
-  const tabs = ['Recording', 'Details', 'Pipeline'];
+export default function RecSection2({ selectedRole, selectedLocation, selectedOffice, selectedRecording, selectedTab, activeDetailPanel, setActiveDetailPanel }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [transcriptIndex, setTranscriptIndex] = useState(0);
   const transcriptText = 'This is a sample transcript that animates as audio plays.';
@@ -100,84 +98,7 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
       display: 'flex',
       flexDirection: 'column'
     }}>
-      {/* Minimalist Tab Selector */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          borderBottom: '1px solid var(--border-color)',
-          background: 'transparent',
-          padding: '0 24px',
-          height: '38px',
-          fontFamily: '"Geist", "Inter", sans-serif',
-        }}
-      >
-        {/* Left: Recording */}
-        <div style={{ display: 'flex', flex: 1 }}>
-          <button
-            onClick={() => setSelectedTab('Recording')}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: selectedTab === 'Recording' ? 'var(--accent-color)' : 'var(--text-secondary)',
-              fontWeight: selectedTab === 'Recording' ? 600 : 500,
-              fontSize: '15px',
-              cursor: 'pointer',
-              borderBottom: selectedTab === 'Recording' ? '2px solid var(--accent-color)' : '2px solid transparent',
-              width: 'fit-content',
-              minWidth: 0,
-              padding: 0,
-              marginBottom: '-2px',
-              transition: 'color 0.2s, border-bottom 0.2s',
-            }}
-          >
-            Recording
-          </button>
-        </div>
-        {/* Right: Details / Pipeline */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-          <button
-            onClick={() => setSelectedTab('Details')}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: selectedTab === 'Details' ? 'var(--accent-color)' : 'var(--text-secondary)',
-              fontWeight: selectedTab === 'Details' ? 600 : 500,
-              fontSize: '15px',
-              cursor: 'pointer',
-              borderBottom: selectedTab === 'Details' ? '2px solid var(--accent-color)' : '2px solid transparent',
-              width: 'fit-content',
-              minWidth: 0,
-              padding: 0,
-              marginBottom: '-2px',
-              transition: 'color 0.2s, border-bottom 0.2s',
-            }}
-          >
-            Details
-          </button>
-          <span style={{ color: 'var(--text-tertiary)', fontSize: '15px' }}>/</span>
-          <button
-            onClick={() => setSelectedTab('Pipeline')}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: selectedTab === 'Pipeline' ? 'var(--accent-color)' : 'var(--text-secondary)',
-              fontWeight: selectedTab === 'Pipeline' ? 600 : 500,
-              fontSize: '15px',
-              cursor: 'pointer',
-              borderBottom: selectedTab === 'Pipeline' ? '2px solid var(--accent-color)' : '2px solid transparent',
-              width: 'fit-content',
-              minWidth: 0,
-              padding: 0,
-              marginBottom: '-2px',
-              transition: 'color 0.2s, border-bottom 0.2s',
-            }}
-          >
-            Pipeline
-          </button>
-        </div>
-      </div>
-      {/* Unified Main Panel */}
+      {/* Only render the unified main panel for the 'Recording' tab (or others as needed) */}
       {selectedTab === 'Recording' ? (
         <div style={{
           flex: 1,
@@ -428,19 +349,15 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
             </div>
           </div>
         </div>
-      ) : (
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--text-secondary)',
-          fontFamily: '"Geist", "Inter", sans-serif'
-        }}>
-          {/* Blank state for Details/Pipeline */}
-          Coming soon
+      ) : selectedTab === 'Details' ? (
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontFamily: '"Geist", "Inter", sans-serif' }}>
+          Details coming soon
         </div>
-      )}
+      ) : selectedTab === 'Pipeline' ? (
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontFamily: '"Geist", "Inter", sans-serif' }}>
+          Pipeline coming soon
+        </div>
+      ) : null}
     </div>
   );
 } 
