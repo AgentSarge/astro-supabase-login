@@ -8,18 +8,16 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
   const intervalRef = useRef(null);
   const [timestamp, setTimestamp] = useState(0);
   const timestampIntervalRef = useRef(null);
+  const imageIntervalRef = useRef(null);
 
-  // Color cycling for image background and text
-  const imageColors = ['#ffe066', '#7be495', '#5bc0eb', '#ff6f61', '#222'];
-  const imageTexts = [
-    { moment: 'Objection handled', speaker: 'Agent' },
-    { moment: 'Appointment set', speaker: 'Rep' },
-    { moment: 'Client agreed', speaker: 'Manager' },
-    { moment: 'Follow-up scheduled', speaker: 'Support' },
-    { moment: 'Call ended', speaker: 'System' },
+  // Image cycling for emotion images
+  const imagePaths = [
+    '/emotion_1.png',
+    '/emotion_2.png',
+    '/emotion_3.png',
+    '/Emotion-Detection-1.png',
   ];
-  const [imageColorIdx, setImageColorIdx] = useState(0);
-  const colorIntervalRef = useRef(null);
+  const [imageIdx, setImageIdx] = useState(0);
 
   // Animate transcript typing when playing
   useEffect(() => {
@@ -33,18 +31,18 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
       timestampIntervalRef.current = setInterval(() => {
         setTimestamp((prev) => prev + 1);
       }, 1000);
-      colorIntervalRef.current = setInterval(() => {
-        setImageColorIdx(idx => (idx + 1) % imageColors.length);
+      imageIntervalRef.current = setInterval(() => {
+        setImageIdx(idx => (idx + 1) % imagePaths.length);
       }, 2000);
     } else {
       clearInterval(intervalRef.current);
       clearInterval(timestampIntervalRef.current);
-      clearInterval(colorIntervalRef.current);
+      clearInterval(imageIntervalRef.current);
     }
     return () => {
       clearInterval(intervalRef.current);
       clearInterval(timestampIntervalRef.current);
-      clearInterval(colorIntervalRef.current);
+      clearInterval(imageIntervalRef.current);
     };
   }, [isPlaying]);
 
@@ -77,6 +75,17 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
     setTimestamp(Math.round(audioDuration * pct));
     setTranscriptIndex(Math.floor(transcriptText.length * pct));
   };
+
+  // Utility to get a human-readable label from the image path
+  function getEmotionLabel(path) {
+    // Remove leading slash and extension
+    let name = path.replace(/^\//, '').replace(/\.[^/.]+$/, '');
+    // Replace underscores and dashes with spaces
+    name = name.replace(/[_-]+/g, ' ');
+    // Capitalize each word
+    name = name.replace(/\b\w/g, c => c.toUpperCase());
+    return name;
+  }
 
   // Placeholder for no selection
   if (!selectedRecording) {
@@ -360,7 +369,7 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                   maxWidth: 540,
                   height: 'min(56vw, 320px)',
                   maxHeight: 320,
-                  background: imageColors[imageColorIdx],
+                  background: '#fff', // fallback background
                   borderRadius: 12,
                   boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
                   display: 'flex',
@@ -368,7 +377,7 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                   justifyContent: 'center',
                   overflow: 'hidden',
                 }}>
-                  <img src="https://dummyimage.com/540x320/111/fff&text=+" alt="Important moment" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12, display: 'block', opacity: 0.7 }} />
+                  <img src={imagePaths[imageIdx]} alt="Emotion detection" style={{ width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 12, display: 'block' }} />
                 </div>
                 <div style={{
                   marginTop: 16,
@@ -386,8 +395,8 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                   justifyContent: 'center',
                   paddingLeft: 0,
                 }}>
-                  <span style={{ fontWeight: 500 }}>Important moment: {imageTexts[imageColorIdx].moment}</span>
-                  <span>Speaker: {imageTexts[imageColorIdx].speaker}</span>
+                  <span style={{ fontWeight: 500 }}>{getEmotionLabel(imagePaths[imageIdx])}</span>
+                  <span>Image emotions tagging example</span>
                 </div>
               </div>
             </div>
@@ -469,7 +478,7 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                   maxWidth: 320,
                   height: 'min(56vw, 180px)',
                   maxHeight: 180,
-                  background: imageColors[imageColorIdx],
+                  background: '#fff', // fallback background
                   borderRadius: 12,
                   boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
                   display: 'flex',
@@ -477,7 +486,7 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                   justifyContent: 'center',
                   overflow: 'hidden',
                 }}>
-                  <img src="https://dummyimage.com/320x180/111/fff&text=+" alt="Important moment" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12, display: 'block', opacity: 0.7 }} />
+                  <img src={imagePaths[imageIdx]} alt="Emotion detection" style={{ width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 12, display: 'block' }} />
                 </div>
                 <div style={{
                   marginTop: 10,
@@ -495,8 +504,8 @@ export default function RecSection2({ selectedRole, selectedLocation, selectedOf
                   justifyContent: 'center',
                   paddingLeft: 0,
                 }}>
-                  <span style={{ fontWeight: 500 }}>Important moment: {imageTexts[imageColorIdx].moment}</span>
-                  <span>Speaker: {imageTexts[imageColorIdx].speaker}</span>
+                  <span style={{ fontWeight: 500 }}>{getEmotionLabel(imagePaths[imageIdx])}</span>
+                  <span>Image emotions tagging example</span>
                 </div>
               </div>
             </div>
